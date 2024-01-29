@@ -18,7 +18,7 @@ export class ContactController {
         return res.status(200).json(contact);
     }
     async updateContact(req: Request, res: Response){
-        const contact =  await this.contactService.updateContact(req.params.id, req.body)
+        const contact =  await this.contactService.updateContact(req.body,req.params.id)
         return res.status(200).json(contact)
     }
     async deleteContact(req: Request, res: Response){

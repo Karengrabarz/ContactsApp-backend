@@ -22,6 +22,6 @@ export class Client {
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;
 
-    @OneToMany(()=>Contact, contact => contact.client)
+    @OneToMany(()=>Contact, contact => contact.client,{onDelete:"CASCADE"})
     contacts: Contact[]
 }

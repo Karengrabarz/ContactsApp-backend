@@ -19,7 +19,7 @@ export class Contact {
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;
 
-    @ManyToOne(()=>Client)
+    @ManyToOne(()=>Client, (client) => client.contacts, { onDelete: 'CASCADE' })
     client: Client
     
 }

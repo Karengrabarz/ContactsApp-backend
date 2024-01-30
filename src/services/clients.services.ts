@@ -1,15 +1,12 @@
-import { Request, Response } from "express";
-
-import crypto from "crypto";
-import { TClient, TClientCreate, TClientResponse, TClientUpdate } from "../interfaces/clients.interfaces";
+import { TClientCreate, TClientCreateReturn, TClientsResponse, TClientUpdate} from "../interfaces/clients.interfaces";
 import { AppDataSource } from "../data-source";
 import { Client } from "../entities/client.entity";
 import { AppError } from "../errors/AppError";
 import { hash } from "bcryptjs";
-import { clientSchemaResponse, clientUpdateSchema, clientsArraySchema } from "../schemas/clients.schemas";
+import { clientCreateReturnSchema, clientSchemaResponse, clientsArraySchema } from "../schemas/clients.schemas";
 
 export class ClientService {
-    async createClient(data:TClientCreate): Promise<TClientResponse>{
+    async createClient(data:TClientCreate): Promise<TClientCreateReturn>{
         const { email, name, password, telefone } = data
         const clientRepository = AppDataSource.getRepository(Client)
         const foundClient = await clientRepository.findOne({
@@ -27,24 +24,27 @@ export class ClientService {
             name, email, password: hashedPassword, telefone
         })
         await clientRepository.save(client)
-        return clientSchemaResponse.parse(client)
+        return clientCreateReturnSchema.parse(client)
     }
     async readClients(){
         const clientRepository = AppDataSource.getRepository(Client)
         const clients = await clientRepository.find()
         return clientsArraySchema.parse(clients)
     }
-    async retriveClient(clientId:string) {
+    async retriveClient(clientId:string): Promise<TClientsResponse>{
         const clientRepository = AppDataSource.getRepository(Client)
         const foundClient = await clientRepository.findOne({
-            where: {id:clientId}
+            where: {id:clientId},
+            relations: {
+                contacts: true
+            }
         })
         if(!foundClient){
             throw new AppError(404,'Client not found')
         }
         return clientSchemaResponse.parse(foundClient) 
     }
-    async updateClient(clientId:string, data:TClientUpdate):Promise<any> {
+    async updateClient(clientId:string, data:TClientUpdate):Promise<TClientCreateReturn> {
         const clientRepository = AppDataSource.getRepository(Client)
         const foundClient = await clientRepository.findOne({
             where: {id:clientId}
@@ -52,6 +52,7 @@ export class ClientService {
         if(!foundClient){
             throw new AppError(404,'Client not found')
         }
+
         if(data.password){
             const hashedPassword = await hash(data.password, 10)
             data.password = hashedPassword
@@ -63,7 +64,7 @@ export class ClientService {
 
         })
         await clientRepository.save(updateClient)
-        return clientSchemaResponse.parse(updateClient)
+        return clientCreateReturnSchema.parse(updateClient)
     }
     async deleteClient(clientId:string):Promise<void> {
         const clientRepository = AppDataSource.getRepository(Client)

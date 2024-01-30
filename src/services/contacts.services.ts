@@ -2,12 +2,10 @@
 import { AppDataSource } from "../data-source";
 
 import { AppError } from "../errors/AppError";
-import { hash } from "bcryptjs";
-import { TContact, TContactCreate, TContactUpdate, TContactsArray } from "../interfaces/contacts.interfaces";
+import { TContact, TContactCreate, TContactUpdate, TContactUpdateReturn } from "../interfaces/contacts.interfaces";
 import { Contact } from "../entities/contacts.entity";
-import { contactSchema, contactUpdateSchema, contactsArraySchema } from "../schemas/contacts.schemas";
+import { contactSchema, contactUpdateSchema, contactUpdateSchemaReturn } from "../schemas/contacts.schemas";
 import { Client } from "../entities/client.entity";
-import { AnyBulkWriteOperation } from "typeorm";
 
 
 export class ContactService {
@@ -25,28 +23,13 @@ export class ContactService {
 
         const contact = contactRepository.create({
             ...data,
-            client
+            client:{id:clientId}
         })
         await contactRepository.save(contact)
-        return contactSchema.parse(contact)
+        return contact
     }
-    async readContacts(clientId:string):Promise<TContactsArray>{
-        const clientRepository = AppDataSource.getRepository(Client)
-        const contactRepository = AppDataSource.getRepository(Contact)
-        const client = await clientRepository.findOne({
-            where: {
-                id:clientId
-            }, relations:{
-                contacts: true
-            }
-        })
-        if (!client) {
-            throw new AppError(404,"Client not found")
-        }
-        
-        return contactsArraySchema.parse(client.contacts)
-    }
-    async retriveContact(contactId:string) {
+
+    async retriveContact(contactId:string):Promise<TContact> {
         const contactRepository = AppDataSource.getRepository(Contact)
         const foundContact = await contactRepository.findOne({
             where: {id:contactId}
@@ -56,7 +39,7 @@ export class ContactService {
         }
         return foundContact   
     }
-    async updateContact(data:any, contactId:string):Promise<any> {
+    async updateContact(data:TContactUpdate, contactId:string):Promise<TContactUpdateReturn> {
         const contactRepository = AppDataSource.getRepository(Contact)
         const foundContact = await contactRepository.findOne({
             where: {id:contactId}
@@ -69,7 +52,7 @@ export class ContactService {
             ...data
         })
         await contactRepository.save(updatedContact)
-        return contactUpdateSchema.parse(updatedContact)
+        return contactUpdateSchemaReturn.parse(updatedContact)
     }
     async deleteContact(contactId:string):Promise<void> {
         const contactRepository = AppDataSource.getRepository(Contact)

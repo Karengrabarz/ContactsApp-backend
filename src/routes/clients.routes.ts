@@ -4,6 +4,7 @@ import { ClientMiddlewares } from "../middlewares/clients.middlewares";
 import { GlobalErrors } from "../errors/errors.middlewares";
 import { clientCreateSchema, clientUpdateSchema } from "../schemas/clients.schemas";
 import { clientController } from "../controllers";
+import { isAuthMiddleware } from "../middlewares/isAuth.middlewares";
 
 export const clientsRouter = Router();
 
@@ -13,7 +14,7 @@ const globalErrors = new GlobalErrors()
 clientsRouter.post('/',globalErrors.validateBody(clientCreateSchema), clientMiddlewares.checkClientEmail, (req: Request, res: Response) => clientController.createClient(req,res))
 clientsRouter.get('/',(req,res)=>clientController.readClients(req,res))
 
-clientsRouter.use('/:id', clientMiddlewares.checkClientId )
+clientsRouter.use('/:id', clientMiddlewares.checkClientId,isAuthMiddleware,clientMiddlewares.isOwner )
 
 clientsRouter.get('/:id',(req,res)=>clientController.retriveClient(req,res))
 clientsRouter.patch('/:id',globalErrors.validateBody(clientUpdateSchema),clientMiddlewares.checkClientEmail, (req,res)=>clientController.updateClient(req,res))

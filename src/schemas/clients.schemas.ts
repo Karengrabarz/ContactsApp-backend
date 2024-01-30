@@ -3,23 +3,44 @@ import { z } from "zod";
 const clientSchema = z.object({
     id: z.string(),
     name: z.string(),
-    email: z.string(),
+    email: z.string().email(),
     password: z.string(),
     telefone: z.number(),
     createdAt: z.date(),
+    contacts: z.object({
+        id: z.string(),
+        name: z.string(),
+        email: z.string(),
+        telefone: z.number(),
+        createdAt: z.date(),
+    }).array(),
 })
-
-const clientCreateSchema = clientSchema.omit({
-    id: true,
-    createdAt: true,
+const clientCreateReturnSchema = clientSchema.pick({
+    id:true,
+    name:true,
+    email:true,
+    telefone: true,
+    createdAt: true
+})
+const clientCreateSchema = clientSchema.pick({
+    name:true,
+    email:true,
+    password: true,
+    telefone: true
 
 })
 const clientSchemaResponse = clientSchema.omit({
     password:true
 })
 
-const clientUpdateSchema = clientCreateSchema.partial()
+const clientUpdateSchema = clientSchema.pick({
+    name:true,
+    email:true,
+    password: true,
+    telefone: true
 
-const clientsArraySchema = clientSchemaResponse.array()
+}).partial()
 
-export {clientSchema, clientCreateSchema, clientUpdateSchema,clientsArraySchema, clientSchemaResponse}
+const clientsArraySchema = clientCreateReturnSchema.array()
+
+export {clientCreateReturnSchema,clientSchema, clientCreateSchema, clientUpdateSchema,clientsArraySchema, clientSchemaResponse}

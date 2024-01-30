@@ -1,12 +1,7 @@
-import { Request, Response } from "express";
-
-import crypto from "crypto";
-import { TClient, TClientCreate, TClientResponse, TClientUpdate } from "../interfaces/clients.interfaces";
 import { AppDataSource } from "../data-source";
 import { Client } from "../entities/client.entity";
 import { AppError } from "../errors/AppError";
-import { compare, hash } from "bcryptjs";
-import { clientSchemaResponse, clientUpdateSchema, clientsArraySchema } from "../schemas/clients.schemas";
+import { compare} from "bcryptjs";
 import { TloginRequest } from "../interfaces/login.interfaces";
 import { sign } from "jsonwebtoken";
 

@@ -1,12 +1,13 @@
-import { AnyZodObject, z } from "zod";
-import {  clientCreateSchema, clientSchema, clientSchemaResponse, clientUpdateSchema, clientsArraySchema } from "../schemas/clients.schemas";
+import { AnyZodObject, TypeOf, z } from "zod";
+import {  clientCreateReturnSchema, clientCreateSchema, clientSchema, clientSchemaResponse, clientUpdateSchema, clientsArraySchema } from "../schemas/clients.schemas";
 import { DeepPartial } from "typeorm";
 
 type TClient = z.infer<typeof clientSchema>
 type TClientCreate = z.infer<typeof clientCreateSchema>
+type TClientCreateReturn = z.infer<typeof clientCreateReturnSchema >
 type TClientUpdate = DeepPartial<TClientCreate>
 type TClientsArray = z.infer<typeof clientsArraySchema>
-type TClientResponse = z.infer<typeof clientSchemaResponse>
+type TClientsResponse = z.infer<typeof clientSchemaResponse>
 interface ErrorMsg{
     error:string;
 }
@@ -22,4 +23,4 @@ interface RequestSchema{
     body?: AnyZodObject
     query?: AnyZodObject
 }
-export{TClient, TClientCreate, TClientUpdate, ErrorMsg, ClientMethods, TClientsArray, TClientResponse}
+export{TClientCreateReturn, TClient, TClientCreate, TClientUpdate, ErrorMsg, ClientMethods, TClientsArray, TClientsResponse}

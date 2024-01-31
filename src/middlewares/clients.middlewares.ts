@@ -6,7 +6,7 @@ import { Client } from "../entities/client.entity";
 
 export class ClientMiddlewares {
     async checkClientId(req:Request, res:Response,next: NextFunction ){
-        const clientId = req.params.clientId;
+        const clientId = req.params.id;
         const clientRepository = AppDataSource.getRepository(Client)
         const foundClient = await clientRepository.findOne({
             where: {id:clientId}
@@ -38,9 +38,7 @@ export class ClientMiddlewares {
     async isOwner(req:Request, res:Response,next: NextFunction ){
         const contactRepository = AppDataSource.getRepository(Client)
         const client = req.params.id
-        console.log(client)
-        const clientId = res.locals.clientId
-        console.log(clientId)
+        const clientId = res.locals.foundClient.id
         const clientObj  = await contactRepository.findOne({
             where: {
                 id: clientId

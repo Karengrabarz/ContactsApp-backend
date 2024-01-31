@@ -7,12 +7,8 @@ export class ContactMiddlewares {
     async checkContactId(req:Request, res:Response,next: NextFunction ){
         const contactRepository = AppDataSource.getRepository(Contact)
         const foundContact = await contactRepository.findOne({
-            where: {id:(req.params.contactId)}
+            where: {id:(req.params.id)}
         })
-
-        // if (foundContact) {
-        //     throw new AppError(409,"Contact already exists")
-        // }
         res.locals = {...res.locals, foundContact}
         return next()
     }
@@ -35,6 +31,7 @@ export class ContactMiddlewares {
         const contactRepository = AppDataSource.getRepository(Contact)
         const contactId = req.params.id
         const clientId = res.locals.clientId
+        console.log(clientId, 'esse eh o locals clientId')
         const contact = await contactRepository.findOne({
             where: {
                 id: contactId

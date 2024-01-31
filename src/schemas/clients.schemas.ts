@@ -42,5 +42,5 @@ const clientUpdateSchema = clientSchema.pick({
 }).partial()
 
 const clientsArraySchema = clientCreateReturnSchema.array()
-
-export {clientCreateReturnSchema,clientSchema, clientCreateSchema, clientUpdateSchema,clientsArraySchema, clientSchemaResponse}
+const readAllClientsSchema = clientCreateReturnSchema.array()
+export {readAllClientsSchema, clientCreateReturnSchema,clientSchema, clientCreateSchema, clientUpdateSchema,clientsArraySchema, clientSchemaResponse}

@@ -3,7 +3,7 @@ import { AppDataSource } from "../data-source";
 import { Client } from "../entities/client.entity";
 import { AppError } from "../errors/AppError";
 import { hash } from "bcryptjs";
-import { clientCreateReturnSchema, clientSchemaResponse, clientsArraySchema } from "../schemas/clients.schemas";
+import { clientCreateReturnSchema, clientSchemaResponse, clientsArraySchema, readAllClientsSchema } from "../schemas/clients.schemas";
 
 export class ClientService {
     async createClient(data:TClientCreate): Promise<TClientCreateReturn>{
@@ -29,9 +29,10 @@ export class ClientService {
     async readClients(){
         const clientRepository = AppDataSource.getRepository(Client)
         const clients = await clientRepository.find()
-        return clientsArraySchema.parse(clients)
+        return readAllClientsSchema.parse(clients)
     }
     async retriveClient(clientId:string): Promise<TClientsResponse>{
+        console.log(clientId,"id service")
         const clientRepository = AppDataSource.getRepository(Client)
         const foundClient = await clientRepository.findOne({
             where: {id:clientId},
@@ -39,6 +40,7 @@ export class ClientService {
                 contacts: true
             }
         })
+        console.log(foundClient)
         if(!foundClient){
             throw new AppError(404,'Client not found')
         }

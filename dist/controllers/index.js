@@ -1,0 +1,18 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sessionController = exports.contactController = exports.clientController = void 0;
+const clients_services_1 = require("../services/clients.services");
+const contacts_services_1 = require("../services/contacts.services");
+const session_services_1 = require("../services/session.services");
+const clients_controllers_1 = require("./clients.controllers");
+const contacts_controllers_1 = require("./contacts.controllers");
+const session_controllers_1 = require("./session.controllers");
+const clientService = new clients_services_1.ClientService();
+const clientController = new clients_controllers_1.ClientController(clientService);
+exports.clientController = clientController;
+const contactService = new contacts_services_1.ContactService();
+const contactController = new contacts_controllers_1.ContactController(contactService);
+exports.contactController = contactController;
+const sessionService = new session_services_1.SessionService();
+const sessionController = new session_controllers_1.SessionController(sessionService);
+exports.sessionController = sessionController;

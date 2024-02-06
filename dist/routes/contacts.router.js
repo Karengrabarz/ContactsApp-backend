@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.contactsRouter = void 0;
+const express_1 = require("express");
+const contacts_middlewares_1 = require("../middlewares/contacts.middlewares");
+const errors_middlewares_1 = require("../errors/errors.middlewares");
+const contacts_schemas_1 = require("../schemas/contacts.schemas");
+const controllers_1 = require("../controllers");
+exports.contactsRouter = (0, express_1.Router)();
+const contactMiddlewares = new contacts_middlewares_1.ContactMiddlewares();
+const globalErrors = new errors_middlewares_1.GlobalErrors();
+exports.contactsRouter.post('/', globalErrors.validateBody(contacts_schemas_1.contactCreateSchema), contactMiddlewares.checkContactEmail, (req, res) => controllers_1.contactController.createContact(req, res));
+exports.contactsRouter.use('/:id', contactMiddlewares.checkContactId, contactMiddlewares.isOwner);
+exports.contactsRouter.get('/:id', (req, res) => controllers_1.contactController.retriveContact(req, res));
+exports.contactsRouter.patch('/:id', globalErrors.validateBody(contacts_schemas_1.contactUpdateSchema), contactMiddlewares.checkContactEmail, (req, res) => controllers_1.contactController.updateContact(req, res));
+exports.contactsRouter.delete('/:id', (req, res) => controllers_1.contactController.deleteContact(req, res));

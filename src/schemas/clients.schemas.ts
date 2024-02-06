@@ -5,13 +5,13 @@ const clientSchema = z.object({
     name: z.string(),
     email: z.string().email(),
     password: z.string(),
-    telefone: z.number(),
+    telefone: z.string(),
     createdAt: z.date(),
     contacts: z.object({
         id: z.string(),
         name: z.string(),
         email: z.string(),
-        telefone: z.number(),
+        telefone: z.string(),
         createdAt: z.date(),
     }).array(),
 })

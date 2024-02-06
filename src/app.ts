@@ -6,10 +6,14 @@ import { GlobalErrors } from './errors/errors.middlewares'
 import helmet from 'helmet'
 import { loginRouter } from './routes/session.routes'
 import { isAuthMiddleware } from './middlewares/isAuth.middlewares'
+import cors from 'cors'
 
 export const app = express()
 app.use(helmet())
 app.use(json())
+app.use(cors({
+    origin:'http://localhost:5173'
+}))
 
 const globalErros = new GlobalErrors()
 app.use('/clients',clientsRouter)

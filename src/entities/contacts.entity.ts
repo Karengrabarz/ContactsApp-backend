@@ -14,7 +14,7 @@ export class Contact {
     email: string
 
     @Column()
-    telefone: number
+    telefone: string
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;

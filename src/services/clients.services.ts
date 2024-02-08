@@ -7,7 +7,6 @@ import { clientCreateReturnSchema, clientSchemaResponse, clientsArraySchema, rea
 
 export class ClientService {
     async createClient(data:TClientCreate): Promise<TClientCreateReturn>{
-        console.log(data)
         const { email, name, password, telefone } = data
         const clientRepository = AppDataSource.getRepository(Client)
         const foundClient = await clientRepository.findOne({

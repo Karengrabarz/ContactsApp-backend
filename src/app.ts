@@ -11,9 +11,7 @@ import cors from 'cors'
 export const app = express()
 app.use(helmet())
 app.use(json())
-app.use(cors({
-    origin:'http://localhost:5173'
-}))
+app.use(cors())
 
 const globalErros = new GlobalErrors()
 app.use('/clients',clientsRouter)

@@ -4,7 +4,7 @@ import { AppDataSource } from "../data-source";
 import { AppError } from "../errors/AppError";
 import { TContact, TContactCreate, TContactUpdate, TContactUpdateReturn } from "../interfaces/contacts.interfaces";
 import { Contact } from "../entities/contacts.entity";
-import { contactSchema, contactUpdateSchema, contactUpdateSchemaReturn } from "../schemas/contacts.schemas";
+import { contactUpdateSchemaReturn } from "../schemas/contacts.schemas";
 import { Client } from "../entities/client.entity";
 
 

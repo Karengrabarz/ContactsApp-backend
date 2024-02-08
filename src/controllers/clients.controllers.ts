@@ -8,10 +8,7 @@ export class ClientController {
         console.log(req.body)
         return res.status(201).json(newClient)
     }
-    // async readClients(req:Request, res: Response){
-    //     const clients = await this.clientService.readClients()
-    //     return res.status(200).json(clients)
-    // }
+
     async retriveClient(req:Request, res: Response){
         const client = await this.clientService.retriveClient(res.locals.clientId)
         return res.status(200).json(client);

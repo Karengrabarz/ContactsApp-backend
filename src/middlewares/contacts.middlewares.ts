@@ -31,7 +31,6 @@ export class ContactMiddlewares {
         const contactRepository = AppDataSource.getRepository(Contact)
         const contactId = req.params.id
         const clientId = res.locals.clientId
-        console.log(clientId, 'esse eh o locals clientId')
         const contact = await contactRepository.findOne({
             where: {
                 id: contactId

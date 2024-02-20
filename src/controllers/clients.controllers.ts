@@ -5,7 +5,6 @@ export class ClientController {
     constructor(private clientService : ClientService){}
     async createClient(req:Request, res: Response) {
         const newClient = await this.clientService.createClient(req.body)
-        console.log(req.body)
         return res.status(201).json(newClient)
     }
 

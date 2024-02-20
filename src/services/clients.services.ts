@@ -32,7 +32,6 @@ export class ClientService {
         return readAllClientsSchema.parse(clients)
     }
     async retriveClient(clientId:string): Promise<TClientsResponse>{
-        console.log(clientId,"id service")
         const clientRepository = AppDataSource.getRepository(Client)
         const foundClient = await clientRepository.findOne({
             where: {id:clientId},
@@ -40,7 +39,6 @@ export class ClientService {
                 contacts: true
             }
         })
-        console.log(foundClient)
         if(!foundClient){
             throw new AppError(404,'Client not found')
         }

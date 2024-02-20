@@ -24,7 +24,6 @@ export class SessionService {
             throw new AppError(401,"Invalid credentials")
         }
         const token = sign({name: foundClient.name},process.env.SECRET_KEY!,{expiresIn:'1y', subject:foundClient.id})
-    
         return token
     }
 }

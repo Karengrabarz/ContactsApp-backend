@@ -10,7 +10,7 @@ export const contactsRouter = Router();
 const contactMiddlewares = new ContactMiddlewares()
 const globalErrors = new GlobalErrors()
 
-contactsRouter.post('/',globalErrors.validateBody(contactCreateSchema),contactMiddlewares.checkContactEmail, (req: Request, res: Response) => contactController.createContact(req,res))
+contactsRouter.post('/',globalErrors.validateBody(contactCreateSchema), (req: Request, res: Response) => contactController.createContact(req,res))
 
 contactsRouter.use('/:id', contactMiddlewares.checkContactId, contactMiddlewares.isOwner )
 
